@@ -21,3 +21,7 @@ A Go-based server for managing product categories.
 ## Development
 
 This project follows standard Go project layout conventions. 
+
+## Description
+
+A basic e-commerce catalog where users can view products and filter by category or price.
