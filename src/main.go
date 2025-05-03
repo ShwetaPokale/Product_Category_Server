@@ -4,11 +4,11 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/lenovo/Product_Category_Server/src/config"
-	"github.com/lenovo/Product_Category_Server/src/controllers/auth"
-	authmiddleware "github.com/lenovo/Product_Category_Server/src/middlewares/auth"
-	"github.com/lenovo/Product_Category_Server/src/models/user"
-	authroutes "github.com/lenovo/Product_Category_Server/src/routes/auth"
+	"Product_Category_Server/src/config"
+	"Product_Category_Server/src/controllers/auth"
+	authmiddleware "Product_Category_Server/src/middlewares/auth"
+	"Product_Category_Server/src/models/user"
+	authroutes "Product_Category_Server/src/routes/auth"
 )
 
 func main() {

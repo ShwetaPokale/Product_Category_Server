@@ -1,4 +1,4 @@
-module github.com/lenovo/Product_Category_Server
+module Product_Category_Server
 
 go 1.21
 
