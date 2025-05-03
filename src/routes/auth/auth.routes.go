@@ -17,6 +17,7 @@ func SetupAuthRoutes(mux *http.ServeMux, authController *auth.AuthController, au
 			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		}
 	})
+
 	mux.HandleFunc("/api/login", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodPost {
 			authController.Login(w, r)
@@ -26,5 +27,11 @@ func SetupAuthRoutes(mux *http.ServeMux, authController *auth.AuthController, au
 	})
 
 	// Protected routes
-	mux.Handle("/api/logout", authMiddleware.Authenticate(http.HandlerFunc(authController.Logout)))
+	mux.Handle("/api/logout", authMiddleware.Authenticate(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodPost {
+			authController.Logout(w, r)
+		} else {
+			http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		}
+	})))
 }
