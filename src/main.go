@@ -5,10 +5,10 @@ import (
 	"net/http"
 
 	"github.com/lenovo/Product_Category_Server/src/config"
-	"github.com/lenovo/Product_Category_Server/src/controllers/login"
-	"github.com/lenovo/Product_Category_Server/src/middlewares/auth"
+	"github.com/lenovo/Product_Category_Server/src/controllers/auth"
+	authmiddleware "github.com/lenovo/Product_Category_Server/src/middlewares/auth"
 	"github.com/lenovo/Product_Category_Server/src/models/user"
-	loginroutes "github.com/lenovo/Product_Category_Server/src/routes/login"
+	authroutes "github.com/lenovo/Product_Category_Server/src/routes/auth"
 )
 
 func main() {
@@ -25,15 +25,17 @@ func main() {
 	// Initialize repositories
 	userRepo := user.NewUserRepository(db)
 
+	// Initialize middleware
+	authMiddleware := authmiddleware.NewAuthMiddleware()
+
 	// Initialize controllers
-	loginController := login.NewLoginController(userRepo)
-	authMiddleware := auth.NewAuthMiddleware()
+	authController := auth.NewAuthController(userRepo, authMiddleware)
 
 	// Initialize router
 	mux := http.NewServeMux()
 
 	// Setup routes
-	loginroutes.SetupLoginRoutes(mux, loginController, authMiddleware)
+	authroutes.SetupAuthRoutes(mux, authController, authMiddleware)
 
 	// Start server
 	log.Println("Server starting on :8080")
