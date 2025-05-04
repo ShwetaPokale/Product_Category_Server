@@ -1,3 +1,5 @@
-module product_category_server
+module github.com/lenovo/Product_Category_Server
 
-go 1.21 
+go 1.21
+
+require github.com/lib/pq v1.10.9
