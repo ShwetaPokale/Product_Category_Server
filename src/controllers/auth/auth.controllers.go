@@ -9,11 +9,11 @@ import (
 )
 
 type AuthController struct {
-	userRepo *user.UserRepository
+	userRepo user.UserRepositoryInterface
 	auth     *authmiddleware.AuthMiddleware
 }
 
-func NewAuthController(userRepo *user.UserRepository, auth *authmiddleware.AuthMiddleware) *AuthController {
+func NewAuthController(userRepo user.UserRepositoryInterface, auth *authmiddleware.AuthMiddleware) *AuthController {
 	return &AuthController{
 		userRepo: userRepo,
 		auth:     auth,

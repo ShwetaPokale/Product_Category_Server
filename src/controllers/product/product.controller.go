@@ -30,7 +30,13 @@ func (c *ProductController) GetAllProducts(w http.ResponseWriter, r *http.Reques
 }
 
 func (c *ProductController) GetProduct(w http.ResponseWriter, r *http.Request) {
-	idStr := r.PathValue("id")
+	// Get product ID from query parameter
+	idStr := r.URL.Query().Get("id")
+	if idStr == "" {
+		http.Error(w, "Product ID is required", http.StatusBadRequest)
+		return
+	}
+
 	id, err := strconv.ParseUint(idStr, 10, 32)
 	if err != nil {
 		http.Error(w, "Invalid product ID", http.StatusBadRequest)
@@ -48,7 +54,13 @@ func (c *ProductController) GetProduct(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *ProductController) GetProductsByCategory(w http.ResponseWriter, r *http.Request) {
-	category := r.PathValue("category")
+	// Get category from query parameter
+	category := r.URL.Query().Get("category")
+	if category == "" {
+		http.Error(w, "Category is required", http.StatusBadRequest)
+		return
+	}
+
 	products, err := c.productRepo.FindByCategory(category)
 	if err != nil {
 		http.Error(w, "Failed to fetch products", http.StatusInternalServerError)
@@ -58,5 +70,3 @@ func (c *ProductController) GetProductsByCategory(w http.ResponseWriter, r *http
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(products)
 }
-
-

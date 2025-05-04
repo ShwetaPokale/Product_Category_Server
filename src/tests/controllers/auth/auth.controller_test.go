@@ -180,7 +180,7 @@ func TestAuthController_Login(t *testing.T) {
 			w := httptest.NewRecorder()
 
 			// Mock expectations
-			if tt.requestBody["username"] != "" {
+			if tt.requestBody["username"] != "" && tt.requestBody["password"] != "" {
 				mockRepo.(*MockUserRepository).On("ValidateCredentials", tt.requestBody["username"], tt.requestBody["password"]).Return(tt.mockUser, tt.mockError)
 			}
 
