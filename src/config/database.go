@@ -1,11 +1,11 @@
 package config
 
 import (
-	"database/sql"
 	"fmt"
 	"os"
 
-	_ "github.com/lib/pq"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 type DBConfig struct {
@@ -31,15 +31,10 @@ func (c *DBConfig) GetDSN() string {
 		c.Host, c.Port, c.User, c.Password, c.DBName)
 }
 
-func InitDB(config *DBConfig) (*sql.DB, error) {
-	db, err := sql.Open("postgres", config.GetDSN())
+func InitDB(config *DBConfig) (*gorm.DB, error) {
+	db, err := gorm.Open(postgres.Open(config.GetDSN()), &gorm.Config{})
 	if err != nil {
 		return nil, fmt.Errorf("error opening database: %v", err)
-	}
-
-	// Test the connection
-	if err := db.Ping(); err != nil {
-		return nil, fmt.Errorf("error connecting to the database: %v", err)
 	}
 
 	return db, nil

@@ -6,11 +6,11 @@ import (
 
 	"Product_Category_Server/src/config"
 	authmiddleware "Product_Category_Server/src/middlewares/auth"
-	
-	"Product_Category_Server/src/models/user"
-	PRODUCT "Product_Category_Server/src/models/product"
+
 	"Product_Category_Server/src/controllers/auth"
 	"Product_Category_Server/src/controllers/product"
+	PRODUCT "Product_Category_Server/src/models/product"
+	"Product_Category_Server/src/models/user"
 	authroutes "Product_Category_Server/src/routes/auth"
 	productroutes "Product_Category_Server/src/routes/product"
 )
@@ -24,26 +24,25 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to initialize database: %v", err)
 	}
-	defer db.Close()
-
 
 	// Initialize repositories
 	userRepo := user.NewUserRepository(db)
 	productRepo := PRODUCT.NewProductRepository(db)
-//only this error is there 
+
 	// Initialize middleware
 	authMiddleware := authmiddleware.NewAuthMiddleware()
-	
 
 	// Initialize controllers
 	authController := auth.NewAuthController(userRepo, authMiddleware)
 	productController := product.NewProductController(productRepo)
+
 	// Initialize router
 	mux := http.NewServeMux()
 
 	// Setup routes
 	authroutes.SetupAuthRoutes(mux, authController, authMiddleware)
 	productroutes.SetupProductRoutes(mux, productController, authMiddleware)
+
 	// Start server
 	log.Println("Server starting on :8080")
 	if err := http.ListenAndServe(":8080", mux); err != nil {
