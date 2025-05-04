@@ -7,13 +7,22 @@ import (
 	"gorm.io/gorm"
 )
 
+// UserRepositoryInterface defines the contract for user repositories
+type UserRepositoryInterface interface {
+	CreateUser(user *User) error
+	GetUserByUsername(username string) (*User, error)
+	UpdateUser(user *User) error
+	DeleteUser(id string) error
+	ValidateCredentials(username, password string) (*User, error)
+}
+
 // UserRepository handles database operations for users
 type UserRepository struct {
 	db *gorm.DB
 }
 
 // NewUserRepository creates a new instance of UserRepository
-func NewUserRepository(db *gorm.DB) *UserRepository {
+func NewUserRepository(db *gorm.DB) UserRepositoryInterface {
 	return &UserRepository{db: db}
 }
 
