@@ -6,6 +6,7 @@ import (
 
 	"Product_Category_Server/src/config"
 	authmiddleware "Product_Category_Server/src/middlewares/auth"
+	corsmiddleware "Product_Category_Server/src/middlewares/cors"
 
 	"Product_Category_Server/src/controllers/auth"
 	"Product_Category_Server/src/controllers/product"
@@ -31,6 +32,7 @@ func main() {
 
 	// Initialize middleware
 	authMiddleware := authmiddleware.NewAuthMiddleware()
+	corsMiddleware := corsmiddleware.NewCORSMiddleware()
 
 	// Initialize controllers
 	authController := auth.NewAuthController(userRepo, authMiddleware)
@@ -39,13 +41,14 @@ func main() {
 	// Initialize router
 	mux := http.NewServeMux()
 
-	// Setup routes
+	// Setup routes with CORS middleware
+	handler := corsMiddleware.HandleCORS(mux)
 	authroutes.SetupAuthRoutes(mux, authController, authMiddleware)
 	productroutes.SetupProductRoutes(mux, productController, authMiddleware)
 
 	// Start server
 	log.Println("Server starting on :8080")
-	if err := http.ListenAndServe(":8080", mux); err != nil {
+	if err := http.ListenAndServe(":8080", handler); err != nil {
 		log.Fatalf("Server failed to start: %v", err)
 	}
 }
