@@ -27,7 +27,6 @@ func SetupProductRoutes(mux *http.ServeMux, productController *product.ProductCo
 	})
 
 	// Protected routes
-
 	mux.Handle("/api/products/", authMiddleware.Authenticate(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case http.MethodGet:

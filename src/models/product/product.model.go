@@ -7,4 +7,5 @@ type Product struct {
 	ProductCategory    string  `gorm:"type:varchar(50)" json:"product_category"`
 	ProductPrice       float64 `gorm:"type:numeric(10,2);check:product_price >= 0" json:"product_price"`
 	QuantityAvailable  int     `gorm:"check:quantity_available >= 0" json:"quantity_available"`
+	Image              string  `gorm:"type:varchar(255)" json:"image"`
 }
