@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	authmiddleware "github.com/lenovo/Product_Category_Server/src/middlewares/auth"
-	"github.com/lenovo/Product_Category_Server/src/models/user"
+	authmiddleware "Product_Category_Server/src/middlewares/auth"
+	"Product_Category_Server/src/models/user"
 )
 
 type AuthController struct {
